@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <section class="text-gray-500 bg-gray-900 body-font" >
+        <div class="container px-5 py-6 mx-auto flex items-center sm:flex-row flex-col">
+            <div class="container">
+                <h1 class="title" style="color:white">
+                    Hey! What is the temperature of your city?
+                </h1>
+            </div>
+
+                <a href="{% url 'deleteAllCities'%}"  type="button" class="lg:mt-2 xl:mt-0 flex-shrink-0 inline-flex text-white bg-teal-500 border-0 py-2 px-8 mt-3 focus:outline-none hover:bg-teal-600 rounded">Delete All Cities</a>
+
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded" >
+                                {{form.name}}
+                            </div>
+                            <button type="submit" class="lg:mt-2 xl:mt-0 flex-shrink-0 inline-flex text-white bg-teal-500 border-0 py-1 px-4 focus:outline-none hover:bg-teal-600 rounded">Search City</button>
+                        </div>
+                        {%if message%}
+                        <div class="notification {{messageClass}}">
+                         {{message}}
+                        </div>
+                        {%endif%}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    {%for cityData in citiesData%}
+                    <div class="box" style="margin-right:40%">
+                        <article class="media">
+
+                            <div class="media-content">
+                                <div class="content">
+                                    <p style="text-transform: capitalize">
+                                        <span class="title">{{cityData.city}}</span>
+                                        <br>
+                                        <span class="title">{{cityData.temperature}} °c</span>
+                                        <br>
+                                        <span>Humidity: {{cityData.humidity}}%</span>
+                                        <br>
+                                         <img src="http://openweathermap.org/img/w/{{cityData.icon}}.png" alt="Image">
+                                        <span> {{cityData.description}}</span>
+
+                                    </p>
+                                </div>
+                            </div>
+                           <div class="media-right">
+                               <a href="{% url 'deleteOneCity' cityData.city%}">
+                                   <button class="delete"></button>
+                               </a>
+                           </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+<!--    <footer class="footer">-->
+<!--        <a class="btn btn-primary btn-lg" href="{% url 'deleteAllCities'%}" role="button">Delete All</a>-->
+<!--    </footer>-->
+</body>
+<footer class="text-gray-500 bg-gray-900 body-font">
+
+  <div class="bg-gray-800">
+    <div class="container px-5 py-6 mx-auto flex items-center sm:flex-row flex-col">
+
+      <p class="text-sm text-gray-600 sm:ml-6 sm:mt-0 mt-4">© 2020 Angad Preet Singh —
+        <a href="https://www.linkedin.com/in/angad-preet-singh-4a9515199/" class="text-gray-500 ml-1" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </p>
+
+      </span>
+    </div>
+  </div>
+</footer>
+</html>
